@@ -177,7 +177,7 @@ On Windows with WSL, it's probably easier to move the built image to your
 Windows drive, then write it to a disk. (But if you really want to [follow these
 steps, then you can use the Linux instructions above.](https://learn.microsoft.com/en-us/windows/wsl/connect-usb))
 
-So first copy the built image to your C drive Downloads folder with(of course,
+So, first copy the built image to your `C` drive `Downloads` folder with(of course,
 filling in the bracketed details):
 
 `cp [Path To Built Image] /mnt/c/Users/"[Windows Username]"/Downloads/nonguix-image.iso`
@@ -194,8 +194,9 @@ the image both from your `Downloads` folder.
 
 ## Next
 
-If you're not concerned about losing previous Guix generations, you can delete
-up the built images from your hard drive with `$ guix gc --delete-generations`.
+If you're not concerned about losing previous Guix generations, you can now
+delete the built images from your hard drive with
+`$ guix gc --delete-generations`.
 
 In `001` I will cover what to do with this USB stick.  If you had any problems
 with this process, [submit a question to github.com/AidanWelch/guix-blog/issues](https://github.com/AidanWelch/guix-blog/issues)
