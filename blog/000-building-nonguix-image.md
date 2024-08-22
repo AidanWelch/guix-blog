@@ -190,15 +190,12 @@ Now, locate `nonguix-image.iso` in your `Downloads` folder, and use a tool such
 as [Rufus](https://rufus.ie/en/) or [balenaEtcher](https://etcher.balena.io/) to
 write the image to your USB drive.  In Rufus if you don't select `DD` mode when
 given the option, it may crash.  Once you're done, its safe for you to delete
-the image both from your `Downloads` folder, and from WSL with the command:
-
-`rm [Path to Built Image]`
-
-Which in my case is:
-
-`rm /gnu/store/qa1drrr1axhj1wk7x7q5z5ibj5a8c1qb-image.iso`
+the image both from your `Downloads` folder.
 
 ## Next
+
+If you're not concerned about losing previous Guix generations, you can delete
+up the built images from your hard drive with `$ guix gc --delete-generations`.
 
 In `001` I will cover what to do with this USB stick.  If you had any problems
 with this process, [submit a question to github.com/AidanWelch/guix-blog/issues](https://github.com/AidanWelch/guix-blog/issues)
