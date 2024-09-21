@@ -34,8 +34,8 @@ to find freedom respecting [Wi-Fi chips](https://guix.gnu.org/manual/en/html_nod
 or keyboards.  And, its especially problematic when it comes to NVIDIA graphics
 drivers.  So, I will settle for a not totally FOSS OS- but [as Nonguix says](https://gitlab.com/nonguix/nonguix):
 
-> Those packages are provided as a last resort, should none of the official Guix
-packages work for you.
+> "Those packages are provided as a last resort, should none of the official Guix
+packages work for you."
 
 Whenever possible, I will use free(for the un-Gnu-initiated [free, in this case,
 means FOSS essentially](https://www.gnu.org/philosophy/free-sw.html)) software-
@@ -57,7 +57,7 @@ still be valuable to fill in any slight gaps that others may be lost or confused
 about.  I will assume general knowledge of Linux, a Bash shell, and Git- but
 will try to explain as much as possible regardless.
 
-A formatting note, I will try to use "\$" before commands when listing them, to
+> 🗒️ A formatting note, I will try to use "\$" before commands when listing them, to
 show it is a command to run in a terminal(unless specified otherwise), the "\$"
 is not itself part of the command.  For example: `$ example_command`
 
@@ -68,27 +68,34 @@ accessible.  Most package managers should have Guix available, for Debian-based
 package managers you can do `$ sudo apt install guix`. (Thought you may want to
 run `$ sudo apt update` and `$ sudo apt upgrade` first.)
 
-If you're on Windows this is a great use-case for [WSL.](https://learn.microsoft.com/en-us/windows/wsl/about)
-But, a virtual machine or other method could also be used.
+> 🪟 If you're on Windows this is a great use-case for [WSL.](https://learn.microsoft.com/en-us/windows/wsl/about)
+> But, a virtual machine or other method could also be used.
 
 Once Guix is installed, try running `$ guix pull`.  On Debian-based distros its
 very slow, if you're impatient it should be fine to cancel with `Control+c`.
 
-If you get the error:
-``guix pull: error: failed to connect to `/var/guix/daemon-socket/socket': No such file or directory``
-You need to start the Guix-daemon yourself, likely with
-`$ sudo systemctl start guix-daemon`(systemd) or
-`$ sudo service guix-daemon start`.
+> ## ⚠️ Daemon Socket Not Found ⚠️
+> If you get the following error when running `$ guix pull`:
+>
+> ``guix pull: error: failed to connect to `/var/guix/daemon-socket/socket': No such file or directory``
+>
+> You need to start the Guix-daemon yourself, likely with
+> `$ sudo systemctl start guix-daemon`(systemd) or
+> `$ sudo service guix-daemon start`.
+>
+> For the latter, you may get the error:
+> `/etc/init.d/guix-daemon: line 35: daemonize: command not found`
+>
+> In that case you must install the packages `daemonize` and `opensysusers`, in
+> Debian-based distros with `$ sudo apt install daemonize opensysusers`.  ([It is
+> possible to avoid opensysusers, but more of a hassle.](https://salsa.debian.org/debian/guix/-/blob/debian/latest/debian/guix.README.Debian?ref_type=heads))
+> You can then run `$ sudo service guix-daemon start` to start the daemon, and
+> `$ sudo update-rc.d guix-daemon defaults` to autostart the daemon(supposedly,
+> though I've not found this to actually work- for unknown reasons).
 
-For the latter, you may get the error:
-`/etc/init.d/guix-daemon: line 35: daemonize: command not found`
+> ## ❄️ Installing Guix on Nix ❄️
+> TODO
 
-In that case you must install the packages `daemonize` and `opensysusers`, in
-Debian-based distros with `$ sudo apt install daemonize opensysusers`.  ([It is
-possible to avoid opensysusers, but more of a hassle.](https://salsa.debian.org/debian/guix/-/blob/debian/latest/debian/guix.README.Debian?ref_type=heads))
-You can then run `$ sudo service guix-daemon start` to start the daemon, and
-`$ sudo update-rc.d guix-daemon defaults` to autostart the daemon(supposedly,
-though I've not found this to actually work- for unknown reasons).
 
 ## Adding Nonguix as a Channel
 
@@ -136,16 +143,22 @@ Now simply run:
 
 Again, it will take a while to run but do not cancel it.
 
-If you get an error that says something like:
-``Throw to key `encoding-error' with args `("scm_to_stringn" "cannot convert wide string to output locale" 84 #f #f)'.``
-Or
-`guix system: error: corrupt input while restoring archive from #<closed: file 7fc0cb767d20>`.
-You may need to change `/etc/default/locale`(such as by running
-`$ sudo nano /etc/default/locale`) from `LANG=C.UTF-8` to something
-like `LANG=en_US.UTF-8`(or if you prefer another locale).  Once that's done you
-should restart for the locale change to take effect.  In WSL rather than
-restarting in Linux you should run `$ wsl --shutdown` in a Command Prompt or
-Powershell window then start WSL again.
+> ## ⚠️ Locale Errors ⚠️
+> If you get an error that says something like:
+>
+> ``Throw to key `encoding-error' with args `("scm_to_stringn" "cannot convert wide string to output locale" 84 #f #f)'.``
+>
+> Or:
+>
+> `guix system: error: corrupt input while restoring archive from #<closed: file 7fc0cb767d20>`.
+>
+> You may need to change `/etc/default/locale`(such as by running
+> `$ sudo nano /etc/default/locale`) from `LANG=C.UTF-8` to something
+> like `LANG=en_US.UTF-8`(or if you prefer another locale).  Once that's done you
+> should restart for the locale change to take effect.  
+>
+> > 🪟 In WSL rather than restarting in Linux you should run `$ wsl --shutdown`
+> in a Command Prompt or Powershell window then start WSL again.
 
 In the unlikely event you want a writable image(if you don't know, you probably
 don't):
@@ -177,8 +190,8 @@ On Windows with WSL, it's probably easier to move the built image to your
 Windows drive, then write it to a disk. (But if you really want to [follow these
 steps, then you can use the Linux instructions above.](https://learn.microsoft.com/en-us/windows/wsl/connect-usb))
 
-So, first copy the built image to your `C` drive `Downloads` folder with(of course,
-filling in the bracketed details):
+So, first copy the built image to your `C` drive `Downloads` folder with(of
+course, filling in the bracketed details):
 
 `cp [Path To Built Image] /mnt/c/Users/"[Windows Username]"/Downloads/nonguix-image.iso`
 
@@ -190,12 +203,12 @@ Now, locate `nonguix-image.iso` in your `Downloads` folder, and use a tool such
 as [Rufus](https://rufus.ie/en/) or [balenaEtcher](https://etcher.balena.io/) to
 write the image to your USB drive.  In Rufus if you don't select `DD` mode when
 given the option, it may crash.  Once you're done, its safe for you to delete
-the image both from your `Downloads` folder.
+the image from your `Downloads` folder.
 
 ## Next
 
 If you're not concerned about losing previous Guix generations, you can now
-delete the built images from your hard drive with
+delete the built image from your hard drive with
 `$ guix gc --delete-generations`.
 
 In `001` I will cover what to do with this USB stick.  If you had any problems
