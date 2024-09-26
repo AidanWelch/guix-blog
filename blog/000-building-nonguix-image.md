@@ -1,6 +1,6 @@
 # 000 - Building a (non)Guix System Install Image
 
-*initially written on August 21st, 2024*
+*initially written on August 21st, 2024; last updated September 26th, 2024*
 
 ## What is Guix?
 
@@ -94,8 +94,19 @@ very slow, if you're impatient it should be fine to cancel with `Control+c`.
 > though I've not found this to actually work- for unknown reasons).
 
 > ## ❄️ Installing Guix on Nix ❄️
-> TODO
-
+> In your `configuration.nix` you should just need to add:
+> ```nix
+> services.guix.enable = true;
+> ```
+> and then rebuild.  However, I had an error where the guix daemon did not start
+> and I fixed it by trying this, somehow:
+> ```nix
+> services.guix = {
+> 	enable = true;
+> 	publish.enable = true;
+> }
+> ```
+> however that shouldn't be needed.
 
 ## Adding Nonguix as a Channel
 
@@ -127,6 +138,48 @@ end of the file:
 
 Then run `$ guix pull` to get the channel; it will take a while to run but do
 not cancel it.
+
+> 💡 To explain line-by-line:
+>
+> 1. `(cons*` [creates a list](https://www.gnu.org/software/guile/manual/html_node/List-Constructors.html)
+> that for our purposes expands the last argument its passed, for example
+> `(list "a" (list "b" "c"))` evaluates to `(a (b c))` while
+> `(cons* "a" (list "b" "c"))` evaluates to `(a b c)`.
+>
+> 2. `(channel` opens the creation of our instance of new `channel` [record.](https://www.gnu.org/software/guile/manual/guile.html#Record-Overview)
+>
+> 3. `(name 'nonguix)` is self-explanatory and sets the name of the channel to
+> `nonguix`.
+>
+> 4. `(url "https://gitlab.com/nonguix/nonguix")` sets the source URL of the
+> channel.
+>
+> 5. `;; Enable signature verification:` is just a comment telling us what the
+> following code is.
+>
+> 6. `(introduction` starts the assignment to the `introduction` value of the
+> `channel` record.
+>
+> 7. `(make-channel-introduction` opens the creation of an instance of a
+> `channel-introduction` record as the value of `introduction`.
+>
+> 8. `"897c1a470da759236cc11798f4e0a5f7d4d59fbc"` specifies the Git commit
+> identifier that first describes the channel OpenPGP keys for authorization of
+> commits- protecting you from unauthorized commits to the channel.
+>
+> 9. `(openpgp-fingerprint` starts the assignment to the `openpgp-fingerprint`
+> value of the `introduction` record.
+>
+> 10. `"2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"` declares the
+> fingerprint to check for in commits.
+>
+> ### ...
+>
+> 15. `%default-channels` adds the Guix built in default channels variable to
+> the list.
+>
+> Future descriptions of Scheme code may not be as thorough, hopefully this
+> gives a decent picture of what it looks like.
 
 ## Cloning the Nonguix Repository
 
@@ -186,24 +239,24 @@ built image path:
 
 `dd if=/gnu/store/qa1drrr1axhj1wk7x7q5z5ibj5a8c1qb-image.iso of=/dev/sdX bs=4M status=progress oflag=sync`
 
-On Windows with WSL, it's probably easier to move the built image to your
-Windows drive, then write it to a disk. (But if you really want to [follow these
-steps, then you can use the Linux instructions above.](https://learn.microsoft.com/en-us/windows/wsl/connect-usb))
-
-So, first copy the built image to your `C` drive `Downloads` folder with(of
-course, filling in the bracketed details):
-
-`cp [Path To Built Image] /mnt/c/Users/"[Windows Username]"/Downloads/nonguix-image.iso`
-
-For example, for my image, and Windows user:
-
-`cp /gnu/store/qa1drrr1axhj1wk7x7q5z5ibj5a8c1qb-image.iso /mnt/c/Users/"Aidan"/Downloads/nonguix-image.iso`
-
-Now, locate `nonguix-image.iso` in your `Downloads` folder, and use a tool such
-as [Rufus](https://rufus.ie/en/) or [balenaEtcher](https://etcher.balena.io/) to
-write the image to your USB drive.  In Rufus if you don't select `DD` mode when
-given the option, it may crash.  Once you're done, its safe for you to delete
-the image from your `Downloads` folder.
+> 🪟 On Windows with WSL, it's probably easier to move the built image to your
+> Windows drive, then write it to a disk. (But if you really want to [follow these
+> steps, then you can use the Linux instructions above.](https://learn.microsoft.com/en-us/windows/wsl/connect-usb))
+>
+> So, first copy the built image to your `C` drive `Downloads` folder with(of
+> course, filling in the bracketed details):
+>
+> `cp [Path To Built Image] /mnt/c/Users/"[Windows Username]"/Downloads/nonguix-image.iso`
+>
+> For example, for my image, and Windows user:
+>
+> `cp /gnu/store/qa1drrr1axhj1wk7x7q5z5ibj5a8c1qb-image.iso /mnt/c/Users/"Aidan"/Downloads/nonguix-image.iso`
+>
+> Now, locate `nonguix-image.iso` in your `Downloads` folder, and use a tool such
+> as [Rufus](https://rufus.ie/en/) or [balenaEtcher](https://etcher.balena.io/) to
+> write the image to your USB drive.  In Rufus if you don't select `DD` mode when
+> given the option, it may crash.  Once you're done, its safe for you to delete
+> the image from your `Downloads` folder.
 
 ## Next
 
