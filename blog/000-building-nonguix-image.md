@@ -1,6 +1,6 @@
 # 000 - Building a (non)Guix System Install Image
 
-*initially written on August 21st, 2024; last updated September 26th, 2024*
+*initially written on August 21st, 2024; last updated November 10th, 2024*
 
 ## What is Guix?
 
@@ -23,7 +23,9 @@ project.  GNU is behind a lot of important projects you've used, or at least
 used by the software you use.  GNU also has a strong stance on what software
 should be used, and so the packages listed in the main Guix [channel](https://guix.gnu.org/manual/en/html_node/Channels.html)
 must somewhat align with that stance.  Which in some respects, to some users,
-can hamper practical usage of Guix.
+can hamper practical usage of Guix.  Regardless, I prefer Guix because of its
+ease of use in many ways compared to other options- especially a more
+understandable language to me.
 
 ## A Brief Preface on the Use of Non-Libre Software
 
@@ -43,8 +45,9 @@ but when not practical I will use non-free software.  I will try to mention
 whenever I use it in this blog, so those motivated to avoid it will do so.  I
 encourage you to [read what GNU says about it and decide for yourself.](https://www.gnu.org/philosophy/free-software-even-more-important.html)
 
-If you decide to stick with GNU Guix, the rest of this article is useless to you,
-instead you should follow the [official Guix installation instructions.](https://guix.gnu.org/manual/en/html_node/System-Installation.html)
+If you decide to stick with pure GNU Guix much of this article may be useless to
+you, instead you should follow the [official Guix installation instructions.](https://guix.gnu.org/manual/en/html_node/System-Installation.html)
+However, you might still find some things that are useful to you in here.
 
 ## A (Slightly) Briefer Preface on the Purpose of this Blog
 
@@ -57,9 +60,9 @@ still be valuable to fill in any slight gaps that others may be lost or confused
 about.  I will assume general knowledge of Linux, a Bash shell, and Git- but
 will try to explain as much as possible regardless.
 
-> 🗒️ A formatting note, I will try to use "\$" before commands when listing them, to
-show it is a command to run in a terminal(unless specified otherwise), the "\$"
-is not itself part of the command.  For example: `$ example_command`
+> 🗒️ A formatting note, I will try to use "\$" before commands when listing
+them, to show it is a command to run in a terminal(unless specified otherwise),
+the "\$" is not itself part of the command.  For example: `$ example_command`
 
 ## Installing Guix(the Package Manager)
 
@@ -186,7 +189,9 @@ not cancel it.
 You need to clone the Nonguix repo so you can build the install image from it,
 simply run `$ git clone https://gitlab.com/nonguix/nonguix.git`.  If you don't
 have `git` installed: install it with your package manager, such as
-`$ sudo apt install git`.
+`$ sudo apt install git` or even `$ guix install git` but you need to make sure
+your `GUIX_PROFILE` is exported for that, as Guix is probably telling you in a
+hint.
 
 ## Building the Image
 
@@ -195,6 +200,10 @@ Now simply run:
 `$ guix system image --image-type=iso9660 ./nonguix/nongnu/system/install.scm`
 
 Again, it will take a while to run but do not cancel it.
+
+> ❗ If you aren't doing this all in one go make sure you've run `$ guix pull`
+> since September 28th, 2024 when a
+> [bug with the installer was fixed.](https://git.savannah.gnu.org/cgit/guix.git/commit/?id=e076b8b88453a2880bc32daeae0bc774149eba92)
 
 > ## ⚠️ Locale Errors ⚠️
 > If you get an error that says something like:
