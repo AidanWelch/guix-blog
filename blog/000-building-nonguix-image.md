@@ -1,6 +1,6 @@
 # 000 - Building a (non)Guix System Install Image
 
-*initially written on August 21st, 2024; last updated November 10th, 2024*
+*initially written on August 21st, 2024; last updated November 12th, 2024*
 
 ## What is Guix?
 
@@ -236,6 +236,8 @@ in my case `/gnu/store/qa1drrr1axhj1wk7x7q5z5ibj5a8c1qb-image.iso`.
 
 Plug a USB stick into your computer.  [If you prefer to burn a DVD refer to the
 official Guix manual.](https://guix.gnu.org/manual/en/html_node/USB-Stick-and-DVD-Installation.html#Burning-on-a-DVD)
+
+> ❗ **THIS PROCESS WILL DELETE ALL FILES ON THE USB STICK** ❗ 
 
 On Linux, [identify the name of the USB stick.](https://wiki.archlinux.org/title/File_systems#Identify_existing_file_systems)
 You can then write the built image to the USB drive with the following command,
